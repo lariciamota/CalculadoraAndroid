@@ -4,7 +4,6 @@ import android.app.Activity
 import android.os.Bundle
 import android.widget.EditText
 import android.widget.TextView
-import android.widget.Button
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -18,7 +17,9 @@ class MainActivity : Activity() {
         val textView = findViewById<TextView>(R.id.text_info)
         var text: String = ""
 
-        //
+        //acoes dos botoes da calculadora
+        //numeros/operacoes printados na tela
+        // clear apaga o que tiver e "= calcula
         btn_0.setOnClickListener {
             text += "0"
             editText.setText(text) }
@@ -78,6 +79,8 @@ class MainActivity : Activity() {
                 val result: String = eval(text).toString()
                 textView.text = result
             } catch (e: ParseException){
+                //se houver erro na funcao eval eh pq uma expressao invalida foi inserida
+                //lanca um toast para notificar
                 val text = "Expressao invalida"
                 val duration = Toast.LENGTH_LONG
 
@@ -133,6 +136,7 @@ class MainActivity : Activity() {
                 nextChar()
                 val x = parseExpression()
                 if (pos < str.length) throw ParseException("Caractere inesperado: " + ch)
+                //exception criada para ser tratada especialmente, sem quebrar aplicacao
                 return x
             }
 
