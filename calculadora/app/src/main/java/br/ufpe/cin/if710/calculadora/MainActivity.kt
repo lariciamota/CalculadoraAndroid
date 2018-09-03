@@ -2,12 +2,108 @@ package br.ufpe.cin.if710.calculadora
 
 import android.app.Activity
 import android.os.Bundle
+import android.widget.EditText
+import android.widget.TextView
+import android.widget.Button
+import android.widget.Toast
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : Activity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        val editText = findViewById<EditText>(R.id.text_calc)
+        val textView = findViewById<TextView>(R.id.text_info)
+        var text: String = ""
+
+        //
+        btn_0.setOnClickListener {
+            text += "0"
+            editText.setText(text) }
+        btn_1.setOnClickListener {
+            text += "1"
+            editText.setText(text)}
+        btn_2.setOnClickListener {
+            text += "2"
+            editText.setText(text)
+        }
+        btn_3.setOnClickListener {
+            text += "3"
+            editText.setText(text) }
+        btn_4.setOnClickListener {
+            text += "4"
+            editText.setText(text) }
+        btn_5.setOnClickListener {
+            text += "5"
+            editText.setText(text)
+        }
+        btn_6.setOnClickListener {
+            text += "6"
+            editText.setText(text) }
+        btn_7.setOnClickListener {
+            text += "7"
+            editText.setText(text)
+        }
+        btn_8.setOnClickListener {
+            text += "8"
+            editText.setText(text)
+        }
+        btn_9.setOnClickListener {
+            text += "9"
+            editText.setText(text)
+        }
+        btn_Add.setOnClickListener {
+            text += "+"
+            editText.setText(text)
+        }
+        btn_Subtract.setOnClickListener {
+            text += "-"
+            editText.setText(text)
+        }
+        btn_Multiply.setOnClickListener {
+            text += "*"
+            editText.setText(text) }
+        btn_Divide.setOnClickListener {
+            text += "/"
+            editText.setText(text)
+        }
+        btn_Power.setOnClickListener {
+            text += "^"
+            editText.setText(text)
+        }
+        btn_Equal.setOnClickListener {
+            try {
+                val result: String = eval(text).toString()
+                textView.text = result
+            } catch (e: ParseException){
+                val text = "Expressao invalida"
+                val duration = Toast.LENGTH_LONG
+
+                val toast = Toast.makeText(applicationContext, text, duration)
+                toast.show()
+            }
+            text = ""
+            editText.setText(text)
+        }
+        btn_Dot.setOnClickListener {
+            text += "."
+            editText.setText(text)
+        }
+        btn_LParen.setOnClickListener {
+            text += "("
+            editText.setText(text)
+        }
+        btn_RParen.setOnClickListener {
+            text += ")"
+            editText.setText(text)
+        }
+        btn_Clear.setOnClickListener {
+            text = ""
+            editText.setText(text)
+        }
+
     }
 
     //Como usar a função:
@@ -36,7 +132,7 @@ class MainActivity : Activity() {
             fun parse(): Double {
                 nextChar()
                 val x = parseExpression()
-                if (pos < str.length) throw RuntimeException("Caractere inesperado: " + ch)
+                if (pos < str.length) throw ParseException("Caractere inesperado: " + ch)
                 return x
             }
 
@@ -93,9 +189,9 @@ class MainActivity : Activity() {
                     else if (func == "tan")
                         x = Math.tan(Math.toRadians(x))
                     else
-                        throw RuntimeException("Função desconhecida: " + func)
+                        throw ParseException("Função desconhecida: " + func)
                 } else {
-                    throw RuntimeException("Caractere inesperado: " + ch.toChar())
+                    throw ParseException("Caractere inesperado: " + ch.toChar())
                 }
                 if (eat('^')) x = Math.pow(x, parseFactor()) // potência
                 return x
