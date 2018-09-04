@@ -9,81 +9,44 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : Activity() {
 
+    val FROM_TEXT_VIEW = "FROM_TEXT_VIEW"
+    val FROM_EDIT_TEXT = "FROM_EDIT_TEXT"
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        var text: String = ""
         val editText = findViewById<EditText>(R.id.text_calc)
         val textView = findViewById<TextView>(R.id.text_info)
 
+        //recebendo de volta o estado anterior à mudanca de configuracao, se houve
         if(savedInstanceState != null){
-            textView.text = savedInstanceState.getString("FROM_TEXT_VIEW")
-            text = savedInstanceState.getString("FROM_EDIT_TEXT")
-            editText.setText(savedInstanceState.getString("FROM_EDIT_TEXT"))
+            textView.text = savedInstanceState.getString(FROM_TEXT_VIEW)
+            editText.setText(savedInstanceState.getString(FROM_EDIT_TEXT))
         }
-       
+
 
         //acoes dos botoes da calculadora
         //numeros/operacoes printados na tela
         // clear apaga o que tiver e "= calcula
-        btn_0.setOnClickListener {
-            text += "0"
-            editText.setText(text) }
-        btn_1.setOnClickListener {
-            text += "1"
-            editText.setText(text)}
-        btn_2.setOnClickListener {
-            text += "2"
-            editText.setText(text)
-        }
-        btn_3.setOnClickListener {
-            text += "3"
-            editText.setText(text) }
-        btn_4.setOnClickListener {
-            text += "4"
-            editText.setText(text) }
-        btn_5.setOnClickListener {
-            text += "5"
-            editText.setText(text)
-        }
-        btn_6.setOnClickListener {
-            text += "6"
-            editText.setText(text) }
-        btn_7.setOnClickListener {
-            text += "7"
-            editText.setText(text)
-        }
-        btn_8.setOnClickListener {
-            text += "8"
-            editText.setText(text)
-        }
-        btn_9.setOnClickListener {
-            text += "9"
-            editText.setText(text)
-        }
-        btn_Add.setOnClickListener {
-            text += "+"
-            editText.setText(text)
-        }
-        btn_Subtract.setOnClickListener {
-            text += "-"
-            editText.setText(text)
-        }
-        btn_Multiply.setOnClickListener {
-            text += "*"
-            editText.setText(text) }
-        btn_Divide.setOnClickListener {
-            text += "/"
-            editText.setText(text)
-        }
-        btn_Power.setOnClickListener {
-            text += "^"
-            editText.setText(text)
-        }
+        btn_0.setOnClickListener { editText.setText(editText.text.toString() + "0")}
+        btn_1.setOnClickListener { editText.setText(editText.text.toString() + "1") }
+        btn_2.setOnClickListener { editText.setText(editText.text.toString() + "2") }
+        btn_3.setOnClickListener { editText.setText(editText.text.toString() + "3") }
+        btn_4.setOnClickListener { editText.setText(editText.text.toString() + "4") }
+        btn_5.setOnClickListener { editText.setText(editText.text.toString() + "5") }
+        btn_6.setOnClickListener { editText.setText(editText.text.toString() + "6") }
+        btn_7.setOnClickListener { editText.setText(editText.text.toString() + "7") }
+        btn_8.setOnClickListener { editText.setText(editText.text.toString() + "8") }
+        btn_9.setOnClickListener { editText.setText(editText.text.toString() + "9") }
+        btn_Add.setOnClickListener { editText.setText(editText.text.toString() + "+") }
+        btn_Subtract.setOnClickListener { editText.setText(editText.text.toString() + "-") }
+        btn_Multiply.setOnClickListener { editText.setText(editText.text.toString() + "*") }
+        btn_Divide.setOnClickListener { editText.setText(editText.text.toString() + "/") }
+        btn_Power.setOnClickListener { editText.setText(editText.text.toString() + "^") }
         btn_Equal.setOnClickListener {
             try {
-                val result: String = eval(text).toString()
+                val result: String = eval(editText.text.toString()).toString()
                 textView.text = result
             } catch (e: ParseException){
                 //se houver erro na funcao eval eh pq uma expressao invalida foi inserida
@@ -94,31 +57,19 @@ class MainActivity : Activity() {
                 val toast = Toast.makeText(applicationContext, text, duration)
                 toast.show()
             }
-            text = ""
-            editText.setText(text)
+            editText.setText("")
         }
-        btn_Dot.setOnClickListener {
-            text += "."
-            editText.setText(text)
-        }
-        btn_LParen.setOnClickListener {
-            text += "("
-            editText.setText(text)
-        }
-        btn_RParen.setOnClickListener {
-            text += ")"
-            editText.setText(text)
-        }
-        btn_Clear.setOnClickListener {
-            text = ""
-            editText.setText(text)
-        }
+        btn_Dot.setOnClickListener { editText.setText(editText.text.toString() + ".") }
+        btn_LParen.setOnClickListener { editText.setText(editText.text.toString() + "(") }
+        btn_RParen.setOnClickListener { editText.setText(editText.text.toString() + ")") }
+        btn_Clear.setOnClickListener { editText.setText("") }
 
     }
 
+    //salvando o estado para nao perder info qnd configuracao mudar
     override fun onSaveInstanceState(outState: Bundle?) {
-        outState?.putString("FROM_TEXT_VIEW", text_info.text.toString())
-        outState?.putString("FROM_EDIT_TEXT", text_calc.text.toString())
+        outState?.putString(FROM_TEXT_VIEW, text_info.text.toString())
+        outState?.putString(FROM_EDIT_TEXT, text_calc.text.toString())
         super.onSaveInstanceState(outState)
     }
 
