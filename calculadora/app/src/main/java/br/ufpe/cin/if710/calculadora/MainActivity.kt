@@ -13,9 +13,16 @@ class MainActivity : Activity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        var text: String = ""
         val editText = findViewById<EditText>(R.id.text_calc)
         val textView = findViewById<TextView>(R.id.text_info)
-        var text: String = ""
+
+        if(savedInstanceState != null){
+            textView.text = savedInstanceState.getString("FROM_TEXT_VIEW")
+            text = savedInstanceState.getString("FROM_EDIT_TEXT")
+            editText.setText(savedInstanceState.getString("FROM_EDIT_TEXT"))
+        }
+       
 
         //acoes dos botoes da calculadora
         //numeros/operacoes printados na tela
@@ -107,6 +114,12 @@ class MainActivity : Activity() {
             editText.setText(text)
         }
 
+    }
+
+    override fun onSaveInstanceState(outState: Bundle?) {
+        outState?.putString("FROM_TEXT_VIEW", text_info.text.toString())
+        outState?.putString("FROM_EDIT_TEXT", text_calc.text.toString())
+        super.onSaveInstanceState(outState)
     }
 
     //Como usar a função:
